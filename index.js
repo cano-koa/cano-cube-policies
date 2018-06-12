@@ -44,7 +44,8 @@ class PoliciesCube extends Cube {
         return new Promise((resolve) => {
             const requiredPolicies = requireAll(this.policyPath)
             map(requiredPolicies, (Policy, fileName) => {
-                const policy = new Policy();
+                const policy = typeof Policy === 'function' ? new Policy() : new Policy.default();
+                global[fileName] = policy;
                 this.bindToApp('policies', fileName, policy)
             })
             resolve()
